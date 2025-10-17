@@ -135,6 +135,29 @@ Based on the API type definitions, Google Drive documents are identified with th
 - `google_slide` - Google Slides
 - `google_sheet` - Google Sheets
 
+## Access Permissions
+
+### OAuth scopes
+
+The connector requests the minimum read-only scopes from Google during authorization:
+
+- `https://www.googleapis.com/auth/drive.readonly` – Download file contents and revisions that you can view
+- `https://www.googleapis.com/auth/drive.metadata.readonly` – Read titles, owners, and sharing metadata for files and shared drives
+- `https://www.googleapis.com/auth/userinfo.email` – Identify the Google account connected to the integration
+
+### File access behavior
+
+| Drive Location | Sync Behavior |
+| -------------- | ------------- |
+| **My Drive files you own** | Always indexed when you have at least viewer access |
+| **Shared with me** | Synced when the user has direct view or edit permissions |
+| **Shared drives** | Requires the user to be a member with viewer or above access |
+| **Restricted or blocked items** | Skipped when Google reports insufficient permissions or data loss prevention rules |
+
+<Note>
+Only read-only scopes are requested. Supermemory never modifies, deletes, or shares content in your Google Drive.
+</Note>
+
 ## Connection Management
 
 ### List All Connections
