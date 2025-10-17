@@ -360,16 +360,38 @@ Control which Notion content gets synced:
   </Tab>
 </Tabs>
 
-## Workspace Permissions
+## Access Permissions
 
-Notion connector respects workspace permissions:
+### OAuth scopes
 
-| Permission Level | Sync Behavior |
-|-----------------|---------------|
-| **Admin** | Full workspace access |
-| **Member** | Pages with read access |
-| **Guest** | Only shared pages |
-| **No Access** | Removed from index |
+The connector requests read-only access to your Notion workspace during authorization:
+
+- `Read content` – Access to view pages, databases, and blocks you can read
+- `Read user information` – Identify the workspace and user account
+
+### Workspace role behavior
+
+| User Role | Available Content | Sync Behavior |
+| --------- | ----------------- | ------------- |
+| **Workspace Admin** | All pages where permissions allow | Full workspace access to shared pages |
+| **Workspace Member** | Pages you own + explicitly shared pages | Syncs pages with read or edit access |
+| **Guest** | Only pages explicitly shared with you | Limited to shared pages only |
+| **Integration access revoked** | None | Content removed from search index |
+
+### Page and database access
+
+<Note>
+Notion's permissions model is page-specific. The integration can only access:
+- Pages and databases explicitly shared with the integration
+- Child pages nested under shared parent pages
+- Database entries where the database itself has been shared
+
+Make sure to share relevant pages with the Supermemory integration from your Notion workspace settings.
+</Note>
+
+<Note>
+Only read permissions are requested. Supermemory cannot create, edit, delete, or share pages in your Notion workspace.
+</Note>
 
 
 ## Database Integration

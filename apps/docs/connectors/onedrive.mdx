@@ -159,6 +159,38 @@ After user grants permissions, Microsoft redirects to your callback URL. The con
 - **Images and media** extracted and referenced
 - **Embedded objects** processed when possible
 
+## Access Permissions
+
+### OAuth scopes
+
+The connector requests read-only Microsoft Graph API permissions during authorization:
+
+- `Files.Read.All` – Read all files the signed-in user can access
+- `Sites.Read.All` – Access document libraries in SharePoint sites connected to OneDrive for Business
+- `User.Read` – Read the user's profile information
+- `offline_access` – Maintain access and refresh tokens for continuous sync
+
+### Account type differences
+
+| Account Type | Available Content | Requirements |
+| ------------ | ----------------- | ------------ |
+| **Personal Microsoft Account** | Files in personal OneDrive | Standard OAuth consent |
+| **Work/School Account** | OneDrive for Business + SharePoint sites you can access | May require admin consent in some organizations |
+| **Admin-restricted tenants** | Limited by IT policies | Admin must pre-approve the application |
+
+### File access behavior
+
+| File Location | Sync Behavior |
+| ------------- | ------------- |
+| **Your files** | Always synced when you're the owner |
+| **Shared with you** | Synced when you have view or edit permissions |
+| **SharePoint sites** | Included if you're a member with read access |
+| **DLP-protected files** | Skipped if blocked by organizational policies |
+
+<Note>
+Only read permissions are requested. Supermemory cannot create, modify, delete, or share files in your OneDrive or SharePoint.
+</Note>
+
 ## Sync Mechanism
 
 Webhooks lead to real-time syncing of changes in documents. You may also manually trigger a sync.
